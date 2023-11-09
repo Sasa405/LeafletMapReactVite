@@ -79,6 +79,7 @@ const MapComponent = ({ pins, onMapClick, onPinDelete }) => {
         deleteButton.addEventListener('click', () => {
           onPinDelete(pin.id);
           marker.closePopup();
+          map.removeLayer(marker);
         });
         popupContent.appendChild(deleteButton);
 
