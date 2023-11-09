@@ -13,8 +13,6 @@ const App = () => {
   const [pins, setPins] = useState([]);
   const handleMapClick = (e) => {
     const { lat, lng } = e.latlng;
-    const [pins, setPins] = useState([]);
-
     // Add a new pin with title, comment, and rating
     const newPin = {
       id: pins.length + 1,
@@ -74,10 +72,6 @@ const App = () => {
         <MapComponent pins={pins} onMapClick={handleMapClick} onPinDelete={handlePinDelete} />
       </div>
     );
-  // This code block will run only once when the component is mounted (double-clicked)
-  // You can set initial pins here if needed
-  // Example:
-
 };
 
 export default App;
