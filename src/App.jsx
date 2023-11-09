@@ -1,41 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MapComponent from './MapComponent';
 import PinForm from './PinForm';
 import './index.css';
 import Linkify from 'react-linkify'; // Import the Linkify component
 
 const App = () => {
-  const [pins, setPins] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
     comment: '',
     rating: 0,
   });
 
-  const handleMapClick = (e) => {
-    const { lat, lng } = e.latlng;
 
-    // Add a new pin with title, comment, and rating
-    const newPin = {
-      id: pins.length + 1,
-      coordinates: [lat, lng],
-      title: formData.title,
-      comment: formData.comment,
-      rating: formData.rating,
+
+  useEffect(() => {
+    const handleMapClick = (e) => {
+      const { lat, lng } = e.latlng;
+      const [pins, setPins] = useState([]);
+
+      // Add a new pin with title, comment, and rating
+      const newPin = {
+        id: pins.length + 1,
+        coordinates: [lat, lng],
+        title: formData.title,
+        comment: formData.comment,
+        rating: formData.rating,
+      };
+      setPins([...pins, newPin]);
+      // Clear the form data
+      setFormData({
+        title: '',
+        comment: '',
+        rating: 0,
+      });
     };
-    setPins([...pins, newPin]);
-    // Clear the form data
-    setFormData({
-      title: '',
-      comment: '',
-      rating: 0,
-    });
-  };
 
-  const handlePinDelete = (pinId) => {
-    const updatedPins = pins.filter((pin) => pin.id !== pinId);
-    setPins(updatedPins);
-  };
+    const handlePinDelete = (pinId) => {
+      const updatedPins = pins.filter((pin) => pin.id !== pinId);
+      setPins(updatedPins);
+    };
+    setPins([
+      {
+        id: 1,
+        coordinates: [51.627438800663235, 6.7701403368593365],
+        title: 'Sample Pin 1',
+        comment: 'This is a sample comment for Pin 1',
+        rating: 4,
+      },
+      {
+        id: 2,
+        coordinates: [55.627438800663235, 9.7701403368593365],
+        title: 'Sample Pin 2',
+        comment: 'This is a sample comment for Pin 1',
+        rating: 4,
+      },
+
+    ]);
+  }, []);
 
   return (
     <div>
@@ -66,20 +87,22 @@ const App = () => {
               </span>
             ))}
           </div>
-          <button
-            type="button"
-            onClick={() => handleMapClick()}
-          >
-            Add Pin
-          </button>
-        </form>
+            <button type="button" onClick={() => handleMapClick()}>
+              Add Pin
+            </button>
+          </form>
+        </div>
+        <MapComponent pins={pins} onMapClick={handleMapClick} onPinDelete={handlePinDelete} />
       </div>
-      <MapComponent pins={pins} onMapClick={handleMapClick} onPinDelete={handlePinDelete} />
-    </div>
-  );
+    );
+  // This code block will run only once when the component is mounted (double-clicked)
+  // You can set initial pins here if needed
+  // Example:
+
 };
 
 export default App;
+
 
 
 
