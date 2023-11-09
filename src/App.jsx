@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import MapComponent from './MapComponent';
 import PinForm from './PinForm';
 import './index.css';
@@ -10,18 +10,20 @@ const App = () => {
     comment: '',
     rating: 0,
   });
-  const [pins, setPins] = useState([]);
+  
+  let pins = useRef([]);
+
   const handleMapClick = (e) => {
     const { lat, lng } = e.latlng;
     // Add a new pin with title, comment, and rating
     const newPin = {
-      id: pins.length + 1,
+      id: pins.current.length + 1,
       coordinates: [lat, lng],
       title: formData.title,
       comment: formData.comment,
       rating: formData.rating,
     };
-    setPins([...pins, newPin]);
+    pins.current.push(newPin);
     // Clear the form data
     setFormData({
       title: '',
@@ -31,8 +33,8 @@ const App = () => {
   };
 
   const handlePinDelete = (pinId) => {
-    const updatedPins = pins.filter((pin) => pin.id !== pinId);
-    setPins(updatedPins);
+    const updatedPins = pins.current.filter((pin) => pin.id !== pinId);
+    pins.current = updatedPins;
   };
 
   return (
