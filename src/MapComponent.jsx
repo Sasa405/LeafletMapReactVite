@@ -25,7 +25,7 @@ const MapComponent = ({ pins, onMapClick, onPinDelete }) => {
         }
       });
 
-      pins.forEach((pin) => {
+      pins.current.forEach((pin) => {
         const marker = L.marker(pin.coordinates).addTo(map);
 
         // Create a popup with title, comment, and rating fields
@@ -79,6 +79,7 @@ const MapComponent = ({ pins, onMapClick, onPinDelete }) => {
         deleteButton.addEventListener('click', () => {
           onPinDelete(pin.id);
           marker.closePopup();
+          map.removeLayer(marker);
         });
         popupContent.appendChild(deleteButton);
 
